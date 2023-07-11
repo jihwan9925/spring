@@ -34,12 +34,53 @@
 	 -->
 	 <!-- Animal클래스를 default생성자로 생성해서 bean으로 등록 -->
 	 <!-- <beans:bean id="bbo" class="com.bs.spring.beantest.Animal"/> -->
+	 
 	 <!-- pojo생성시 setter를 이용해서 데이터를 넣어서 생성시키기 -->
-	 <beans:bean id="bbo" class="com.bs.spring.beantest.Animal">
+	 <!-- <beans:bean id="bbo" class="com.bs.spring.beantest.Animal">
 	 	<beans:property name="name" value="뽀송이"/>
 	 	<beans:property name="age" value="3"/>
 	 	<beans:property name="height" value="50.4"/>
+	 </beans:bean> -->
+	 
+	 <!-- 매개변수있는 생성자를 이용해서 생성시키기 -->
+	 <beans:bean id="bbo" class="com.bs.spring.beantest.Animal">
+	 	<beans:constructor-arg index="0" value="뽀송이"/>
+	 	<beans:constructor-arg index="1" value="3"/>
+	 	<beans:constructor-arg index="2" value="50.4"/>
 	 </beans:bean>
+	
+	<!-- 타입이 Animal인 bean이 2개이기 때문에 무었을 선택할지 몰라 에러(NoUniqueBeanDefinitionException)가 발생한다. -->
+	<beans:bean id="dog" class="com.bs.spring.beantest.Animal">
+	 	<beans:property name="name" value="뽀삐"/>
+	 </beans:bean>
+	 
+	<!-- init-method : 생성전에 실행될 메소드 설정 destroy-method : 소멸후에 실행될 메소드 -->
+	<beans:bean id="emp" class="com.bs.spring.beantest.Employee" 
+	init-method="initialMethod" destroy-method="destroyMethod">
+	 	<beans:property name="name" value="최주영"/>
+	 	<beans:property name="age" value="24"/>
+	 	<beans:property name="address" value="경기도 안양시"/>
+	 	<beans:property name="salary" value="100"/>
+	 	<beans:property name="dept" ref="dept"/>
+	 </beans:bean>
+	 
+	<!-- 매개변수있는 생성자를 이용해서 생성시키기(dept버전) -->
+	<beans:bean id="emp2" class="com.bs.spring.beantest.Employee">
+	 	<beans:constructor-arg index="0" ref="dept"/>
+	 </beans:bean>
+	
+	 
+	 <!-- 다른객체를 필드값으로 가지고 있는 경우 동시에 생성하는 방법 -->
+	 <!--
+	   등록하는 bean이 다른 클래스와 연관관계(참조)가 설정되어 있을때는 다른 bean을 등록해야한다. (ref속성을 이용한다.)
+	   -->
+	<beans:bean id="dept" class="com.bs.spring.beantest.Department">
+	 	<beans:constructor-arg index="0" value="1"/>
+	 	<beans:constructor-arg index="1" value="개발부"/>
+	 	<beans:constructor-arg index="2" value="판교"/>	 	
+	 </beans:bean>
+	 
+	 
 	
 	
 </beans:beans>
