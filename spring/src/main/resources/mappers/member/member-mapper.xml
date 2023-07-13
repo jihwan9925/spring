@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="member">
+	<resultMap type="member" id="memberMap">
+		<result property="hobby" column="hobby" typeHandler="strArr" />
+	</resultMap>
+	
+	<insert id="insertMember" parameterType="member">
+		INSERT INTO MEMBER VALUES(#{userId},#{password},#{userName},#{gender},#{age},#{email},#{phone},#{address},#{hobby,typeHandler=strArr},DEFAULT)
+	</insert>
+	
+	<select id="login" resultMap="memberMap" parameterType="member"> 
+	<!-- 여기서 resultMap인 이유: 입력엔 문제없지만, 출력값이 Member테이블인 이상, typeHandler가 필요하다. -->
+		SELECT * FROM MEMBER WHERE USERID=#{userId}
+	</select>
+</mapper>

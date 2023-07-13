@@ -47,13 +47,50 @@
 							<a class="nav-link" href="${path }/demo/demo.do">ControllerTest</a>
 						</li>
 					</ul>
+					<c:if test="${loginMember==null }">
 						<button class="btn btn-outline-success my-2 my-sm-0"
 						data-toggle="modal" data-target="#loginModal">로그인</button>
 						&nbsp;
 						<button class="btn btn-outline-primary my-2 my-sm-0"
-						onclick="">
+						onclick="location.assign('${path }/member/enrollMember.do')"> <!-- /member/insertMember.do 로 이동 -->
 							회원가입
-						</button>
+						</button>					
+					</c:if>
+					<c:if test="${loginMember!=null }">
+						<a href="${path }/member/mypage.do?userId=${loginMember.userId}">
+							<c:out value="${loginMember.userName }"/>
+						</a>
+						님 환영합니다.&nbsp;
+						<button class="btn btn-outline-success my-2 my-sm-0"
+						onclick="location.replace('${path }/member/logout.do')">로그아웃</button>
+					</c:if>
 				</div>
 			</nav>	
 		</header>
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+		aria-labelledby="loginModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="loginModalLabel">로그인</h5>
+						<button type="button" class="close" 
+						data-dismiss="modal" aria-label="close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="${path }/member/login.do" method="post">
+						<div class="modal-body">
+							<input type="text" name="userId" class="form-control"
+							placeholder="아이디입력" required><br/>
+							<input type="password" name="password" class="form-control"
+							placeholder="패스워드입력" required>											
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-outline-success">로그인</button>
+							<button type="button" class="btn btn-outline-success"
+							data-dismiss="modal">취소</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
