@@ -14,4 +14,8 @@
 	<!-- 여기서 resultMap인 이유: 입력엔 문제없지만, 출력값이 Member테이블인 이상, typeHandler가 필요하다. -->
 		SELECT * FROM MEMBER WHERE USERID=#{userId}
 	</select>
+	
+	<update id="update" parameterType="member"> 
+		UPDATE MEMBER SET USERNAME=#{userName}, GENDER=#{gender}, AGE=#{age}, EMAIL=#{email}, PHONE=#{phone}, ADDRESS=#{address}, HOBBY=#{hobby, typeHandler=strArr}, ENROLLDATE=SYSDATE WHERE USERID=#{userId}
+	</update>
 </mapper>

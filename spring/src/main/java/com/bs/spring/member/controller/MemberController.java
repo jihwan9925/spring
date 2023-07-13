@@ -90,4 +90,20 @@ public class MemberController {
 		return "/member/mypage";
 	}
 	
+	@PostMapping("/update.do")
+	public String update(Member member, Model m) {
+		int result = service.update(member);
+		if(result>0) {
+			//성공
+			m.addAttribute("loginMember", service.login(member));
+			m.addAttribute("msg", "수정 성공");
+			m.addAttribute("loc", "/member/mypage.do");
+		}else {
+			//실패
+			m.addAttribute("msg", "수정 실패");
+			m.addAttribute("loc", "/");
+		}
+		return "common/msg";
+	}
+	
 }

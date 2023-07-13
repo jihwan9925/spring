@@ -57,8 +57,9 @@
 						</button>					
 					</c:if>
 					<c:if test="${loginMember!=null }">
-						<a href="${path }/member/mypage.do?userId=${loginMember.userId}">
-							<c:out value="${loginMember.userName }"/>
+						<a href="${path }/member/mypage.do">
+							<%-- <c:out value="${loginMember.userName!=null}?${loginMember.userName}:''"/> --%>
+							${loginMember.userName}
 						</a>
 						님 환영합니다.&nbsp;
 						<button class="btn btn-outline-success my-2 my-sm-0"

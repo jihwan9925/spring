@@ -12,7 +12,7 @@
 		div#enroll-container input, div#enroll-container select {margin-bottom:10px;}
 	</style>
 	<div id="enroll-container">
-		<form name="memberEnrollFrm" action="${path }/member/insertMember.do" method="post" >
+		<form name="memberEnrollFrm" action="${path }/member/update.do" method="post" >
 			<input type="text" class="form-control" placeholder="아이디 (4글자이상)" name="userId" id="userId_" required value="${loginMember.userId }" readonly>
 			<input type="text" class="form-control" placeholder="이름" name="userName" id="userName" required value="${loginMember.userName }">
 			<input type="number" class="form-control" placeholder="나이" name="age" id="age" value="${loginMember.age }">

@@ -8,4 +8,6 @@ public interface MemberDao {
 	public int insertMember(SqlSession session, Member member);
 	
 	public Member login(SqlSession session, Member member);
+	
+	public int update(SqlSession session, Member member);
 }

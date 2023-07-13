@@ -6,4 +6,5 @@ public interface MemberService {
 	public int insertMember(Member member);
 	
 	public Member login(Member member);
+	public int update(Member member);
 }
