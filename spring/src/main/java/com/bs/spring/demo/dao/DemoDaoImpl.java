@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.bs.spring.demo.model.dto.Demo;
+import com.bs.spring.demo.model.dto.Memo;
 
 @Repository
 public class DemoDaoImpl implements DemoDao {
@@ -21,5 +22,6 @@ public class DemoDaoImpl implements DemoDao {
 		// TODO Auto-generated method stub
 		return session.selectList("demo.selectDemoAll");
 	}
+	
 
 }

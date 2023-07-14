@@ -12,4 +12,5 @@
 	<select id="selectDemoAll" resultMap="demoMap"	>
 		SELECT * FROM DEV
 	</select>
+	
 </mapper>

@@ -21,8 +21,19 @@
 		<property name="password" value="spring"/>
 	</bean>
 	
+	<!-- logger에 다양한 로그를 출력하는 라이브러리 -->
+	<bean id="proxyDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg index="0" ref="dataSource"/>
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE"/>
+				<property name="sqlPrefix" value="[SQL]"/>
+			</bean>
+		</property>
+	</bean>
+	
 	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
+		<property name="dataSource" ref="proxyDataSource"/>
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 		<property name="mapperLocations" value="classpath:mappers/**/*.xml"/>
 	</bean>

@@ -4,6 +4,11 @@
 <%@ taglib  prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 
+<%-- <%
+	String str=null;
+	str.length();
+%> --%>
+
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param name="title" value="요청처리하기"/>
 </jsp:include>

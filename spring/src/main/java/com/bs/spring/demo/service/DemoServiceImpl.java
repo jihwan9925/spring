@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bs.spring.demo.dao.DemoDao;
 import com.bs.spring.demo.model.dto.Demo;
+import com.bs.spring.demo.model.dto.Memo;
 
 @Service
 public class DemoServiceImpl implements DemoService {
@@ -29,5 +30,6 @@ public class DemoServiceImpl implements DemoService {
 		// TODO Auto-generated method stub
 		return dao.selectDemoAll(session);
 	}
+	
 
 }

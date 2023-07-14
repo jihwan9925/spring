@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bs.spring.MainController;
 import com.bs.spring.demo.model.dto.Demo;
+import com.bs.spring.demo.model.dto.Memo;
 import com.bs.spring.demo.service.DemoService;
 
 @Controller
@@ -247,14 +248,6 @@ public class DemoController {
 		 
 		return "common/msg"; //지금은 메세지처리때문에 메세지화면으로 이동함
 		//return "demo/demo";
-	}
-	
-	@RequestMapping(value="/demo/selectDemoAll.do",method=RequestMethod.POST)
-	public String selectDemoAll(Model m) {
-		List<Demo> result = service.selectDemoAll();
-		System.out.println("list : "+result);
-		m.addAttribute("demo",result);
-		return "demo/demoList";
 	}
 	
 }
