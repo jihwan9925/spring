@@ -250,4 +250,11 @@ public class DemoController {
 		//return "demo/demo";
 	}
 	
+	@RequestMapping(value="/demo/selectDemoAll.do",method=RequestMethod.POST)
+	public String selectDemoAll(Model m) {
+		List<Demo> result = service.selectDemoAll();
+		m.addAttribute("demo",result);
+		return "demo/demoList";
+	}
+	
 }

@@ -6,20 +6,21 @@
       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
       
       <!-- xml방식으로 aop적용하기 -->
-      <!-- 
-      	
-       -->
-	<bean id="loggerAspect" class="com.bs.spring.common.aop.LoggerAspect"/>
+
+	<!-- <bean id="loggerAspect" class="com.bs.spring.common.aop.LoggerAspect"/>
 	<aop:config>
 		<aop:aspect ref="loggerAspect">
-			<!-- <aop:pointcut expression="execution(* com.bs.spring.memo..*(..))" id="logPointcut"/> -->
+			<aop:pointcut expression="execution(* com.bs.spring.memo..*(..))" id="logPointcut"/>
 			<aop:pointcut expression="execution(* com.bs.spring..*List(..))" id="logPointcut"/>
-			<!-- execution(* com.bs.spring.memo..*(..))
-			 [..] 모든 클래스||모든 매개변수 / 매개변수전에 메소드명을 구분자로 사용가능하다.(*은 sql문의 %와 동일) / ()는 매개변수 /  -->
-			<aop:before method="loggerBefore" pointcut-ref="logPointcut"/> <!-- 어드바이저 설정 -->
+			execution(* com.bs.spring.memo..*(..))
+			 [..] 모든 클래스||모든 매개변수 / 매개변수전에 메소드명을 구분자로 사용가능하다.(*은 sql문의 %와 동일) / ()는 매개변수 / 
+			<aop:before method="loggerBefore" pointcut-ref="logPointcut"/> 어드바이저 설정
 			<aop:after method="loggerAfter" pointcut-ref="logPointcut"/>
 		</aop:aspect>
-	</aop:config>
+	</aop:config> -->
+	
+	<!-- annotation방식으로 AOP적용하기 -->
+	<aop:aspectj-autoproxy/>
 
 </beans>
 

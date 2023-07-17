@@ -55,6 +55,12 @@
 		<error-code>500</error-code>
 		<location>/WEB-INF/views/common/error/error500.jsp</location>
 	</error-page>
+	
+	<!-- aop example -->
+	<error-page>
+		<exception-type>com.bs.spring.common.exception.AuthenticationException</exception-type>
+		<location>/WEB-INF/views/common/error/authentication.jsp</location>
+	</error-page>
 
 
 </web-app>

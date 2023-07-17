@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -29,12 +32,18 @@ public class MemberController {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	@RequestMapping("/enrollMember.do")
-	public String enrollMember() {
+	public String enrollMember(@ModelAttribute("member") Member m) {
 		return "member/enrollMember";
 	}
 	
 	@PostMapping("/insertMember.do")
-	public String insertMember(Member member, Model m) {
+	public String insertMember(@Validated Member member, BindingResult isResult, Model m) {
+		
+		if(isResult.hasErrors()) {
+			//에러나면 다시 입력창으로 이동
+			return "member/enrollMember";	
+		}
+		
 		//패스워드를 암호화해서 처리하기
 		String oriPassword = member.getPassword();
 		String encodePassword = passwordEncoder.encode(oriPassword);
@@ -73,6 +82,7 @@ public class MemberController {
 	public String logout(SessionStatus status) {
 		//@SessionAttributes로 등록된 내용 삭제하기 -> SessionStatus객체를 이용해서 삭제
 //		if(session!=null) session.invalidate();
+		if(1==1) throw new IllegalArgumentException("잘못된 접근입니다."); //오류를 보기위한 임시코드
 		
 		if(!status.isComplete()) status.setComplete();
 		return "redirect:/";

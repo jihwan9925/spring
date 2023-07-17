@@ -217,6 +217,15 @@
 		    <version>${org.aspectj-version}</version>
 		    <scope>runtime</scope>
 		</dependency>
+		
+		<!-- bean vaildator구현하기 -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+		<dependency>
+		    <groupId>org.hibernate.validator</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>6.2.5.Final</version>
+		</dependency>
+
 
 
 		

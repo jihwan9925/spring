@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.bs.spring.beantest.Animal;
 import com.bs.spring.beantest.Department;
@@ -14,6 +15,7 @@ import com.bs.spring.beantest.Employee;
 
 //클래스 방식으로 bean등록해서 사용하기
 // pojo 클래스를 configuration으로 사용할 수 있다 -> @Configuration어노테이션이용
+@EnableWebMvc
 @Configuration //일반 클래스를 spring에서 등록할 수 있는 어노테이션
 @ComponentScan(//어노테이션이 부여된 Class들을 자동으로 Scan하여 Bean으로 등록하는 어노테이션
 		basePackages = "com.bs.spring", //bean객체를 등록하기위한 최상위 디렉토리 설정

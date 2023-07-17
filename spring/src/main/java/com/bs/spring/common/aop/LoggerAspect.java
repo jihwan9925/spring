@@ -8,7 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LoggerAspect {
-	
+
+	//  xml방식으로 aop생성 적용하기
 //	어떤 메소드가 실행되기 전에 공통적으로 실행되는 메소드 설정
 	public void loggerBefore(JoinPoint jp) {
 		log.debug("----- aop loggerBefore -----");

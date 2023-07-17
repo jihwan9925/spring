@@ -90,6 +90,7 @@
 	 	<interceptor>
 	 		<mapping path="/demo/selectDemoAll.do"/>
 	 		<mapping path="/memo/*"/>
+	 		<mapping path="/board/*"/>
 	 		<beans:ref bean="loginCheck"/>
 	 	</interceptor>
 	 </interceptors>
