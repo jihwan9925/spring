@@ -93,11 +93,15 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/insertBoard.do")
-	public String insertBoard(Board b, Member member, MultipartFile[] upFile, HttpSession session, Model m) {
+	public String insertBoard(Board b, String userId, MultipartFile[] upFile, HttpSession session, Model m) {
 		//dto에 boardWriter가 member타입으로 바꿨기 때문에 form으로 보내는 name을 userId로 맞추고,
 		//그 값을 Member로 받아옴으로서 boardWriter와 자료형을 맞춘다.
-		b.setBoardWriter(member);
-		System.out.println("====="+b+"=====");
+		b.setBoardWriter(Member.builder().userId(userId).build());
+//		b.getBoardWriter().setUserId(userId); // Member자료형을 생성하지 않았기 때문에 오류가 뜬다.
+		// b.getBoardWriter()로 접근하면 안되는 이유 : Member를 생성하기 전이기 때문에 불러와도 null이 뜬다.
+		// 그러므로 dto에 생성로직을 넣거나 builder를 이용해서 생성까지 한번에 해결하는 방법이 있다.(
+		//	EX = b.setBoardWriter(Member.builder().userId(userId).build());
+		//)
 		log.info("{}",b);
 		log.info("{}",upFile);
 		
