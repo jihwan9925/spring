@@ -44,7 +44,7 @@
 	
 		<!-- Application Loggers -->
 	<logger name="com.bs.spring"> <!-- 로그가 발생하는 위치선택 -->
-		<level value="debug" /> <!-- 용도에 따른 레벨 -->
+		<level value="info" /> <!-- 용도에 따른 레벨 -->
 		<appender-ref ref="fileAppender"/> <!--일부에만 다른 appender를 추가하는 방법: (root와 개별 appender둘다 설정된다.)-->
 	</logger>
 	

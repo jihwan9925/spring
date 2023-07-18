@@ -1,24 +1,39 @@
 package com.bs.spring.board.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.bs.spring.board.model.dto.Attachment;
 import com.bs.spring.board.model.dto.Board;
 import com.bs.spring.board.sevice.BoardService;
 import com.bs.spring.common.PageFactory;
+import com.bs.spring.member.model.dto.Member;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -67,8 +82,108 @@ public class BoardController {
 		
 		//상세 내용 불러오기
 		Board board = service.boardView(no);
-		m.addAttribute("bView", board);
+		m.addAttribute("board", board);
 		
 		return "/board/boardView";
 	}
+	
+	@RequestMapping("/boardForm.do")
+	public String boardForm() {
+		return "/board/boardForm";
+	}
+	
+	@RequestMapping("/insertBoard.do")
+	public String insertBoard(Board b, Member member, MultipartFile[] upFile, HttpSession session, Model m) {
+		//dto에 boardWriter가 member타입으로 바꿨기 때문에 form으로 보내는 name을 userId로 맞추고,
+		//그 값을 Member로 받아옴으로서 boardWriter와 자료형을 맞춘다.
+		b.setBoardWriter(member);
+		System.out.println("====="+b+"=====");
+		log.info("{}",b);
+		log.info("{}",upFile);
+		
+		
+		//MultipartFile에서 제공하는 메소드를이용해서
+		//파일을 저장할 수 있다 (tramsferTo()메소드 사용)
+		//파일명에 대한 rename규칙을 설정
+		//직접rename규칙을 만들어 저장하기
+		//규칙 : yyyyMMdd_HHmmssSSS_랜덤값
+		//원본 파일에서 확장자 가져오기 위해 불러옴
+		
+		//파일을 저장하기위한 절대경로 가져오기
+		String path = session.getServletContext().getRealPath("/resources/upload/board/");
+		
+		if(upFile!=null) {
+			for(MultipartFile mf:upFile) {
+				if(!mf.isEmpty()) {
+					
+					String oriName = mf.getOriginalFilename();
+					String ext = oriName.substring(oriName.lastIndexOf("."));
+					Date today = new Date(System.currentTimeMillis());
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+					int rdn = (int)(Math.random()*10000)+1;
+					String rename = sdf.format(today)+"_"+rdn+ext;
+					
+					try {
+						mf.transferTo(new File(path+rename));				
+					}catch(IOException e) {
+						e.printStackTrace();
+					}
+					
+					Attachment file = Attachment.builder()
+							.originalFileName(oriName)
+							.renameFileName(rename)
+							.build();
+					
+					b.getFile().add(file);
+				}
+			}
+		}
+		try {
+			service.insertBoard(b);			
+		}catch(RuntimeException e) {
+			for(Attachment a : b.getFile()) {
+				File delFile=new File(path+a.getRenameFileName());
+				delFile.delete();
+			}
+			m.addAttribute("msg", "글쓰기 등록실패");
+			m.addAttribute("loc", "/board/boardForm.do");
+			return "common/msg";
+		}
+		
+		return "redirect:/board/boardList.do";
+	}
+	
+	@RequestMapping("/filedownload")
+	public void fileDown(String oriName, String reName, OutputStream out,
+			@RequestHeader(value="user-agent") String header, HttpSession session, HttpServletResponse res) {
+		
+		String path = session.getServletContext().getRealPath("/resources/upload/board/");
+		File downloadFile = new File(path+reName);
+		try(FileInputStream fis = new FileInputStream(downloadFile);
+				BufferedInputStream bis = new BufferedInputStream(fis);
+				BufferedOutputStream bos = new BufferedOutputStream(out)){
+			
+			boolean isMS = header.contains("Trident")||header.contains("MSIE");
+			String encodeRename = "";
+			if(isMS) {
+				encodeRename = URLEncoder.encode(oriName,"UTF-8");
+				encodeRename = encodeRename.replaceAll("\\+", "%20");
+			}else {
+				encodeRename = new String(oriName.getBytes("UTF-8"),"ISO-8859-1");
+			}
+			res.setContentType("application/octet-stream;charset=utf-8");
+			res.setHeader("Content-Disposition","attachment;filename=\""+encodeRename+"\"");
+			
+			int read=-1;
+			while((read=bis.read())!=-1) {
+				bos.write(read);
+			}
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 }

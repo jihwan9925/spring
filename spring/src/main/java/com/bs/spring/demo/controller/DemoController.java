@@ -61,7 +61,7 @@ public class DemoController {
 	// 5) InputStream/Reader : 파일 읽어올 때 사용하는 stream
 	// 6) OutputStream/Writer : 파일 보낼 때 사용하는 stream
 	// 7) 기본자료형 변수 : 클라이언트가 보낸 parameter데이터랑 선언한 변수이름이 동일하면 자동으로 매핑해준다. =============================
-	       //선언이름과 파라미터이름이 다를 경우 @RequsetParameter머노테이션을 이용해서 연결할 수 있다.
+	       //선언이름과 파라미터이름이 다를 경우 @RequsetParameter어노테이션을 이용해서 연결할 수 있다.
 		   //@RequestParam은 매핑,기본값설정,필수여부설정
 	// 8) 클래스변수 : Command(=Dto)라고 한다. parameter데이터를 필드에 넣어서 객체를 전달한다 (parameter이름과 필드명이 같은 데이터를 대입해준다.)
 	// 9) java.util.Map : @RequestParam 어노테이션과 같이 사용한다. (parameter값을 map으로)

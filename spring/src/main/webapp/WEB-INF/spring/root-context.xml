@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<!-- <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd"> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	<!-- DB연결하는 객체 bean으로 등록하기 -->
 	<!--
 		1. DataSource클래스 (DB에 접속하는 정보를 제공해주는 bean [BasicDataSource클래스를 등록])
@@ -37,20 +43,40 @@
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 		<property name="mapperLocations" value="classpath:mappers/**/*.xml"/>
 	</bean>
-	<!-- <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="configLocation" value="classpath:mybatis-config.xml"/>
-		<property name="mapperLocations" value="classpath:mappers/**/*.xml"/>
-	</bean> -->
 	
 	<bean id="sessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sessionFactory"/>
 	</bean>
 	
+	<!-- 
+		트렌젝션 설정하기
+		DataSourceTransationManager클래스를 bean으로 등록
+		2. 어노테이션방식으로 설정하기
+		<tx:annotaion-deiven>태그를 설정
+	 -->
+	 
+	 <bean id="transactionManager"
+	 	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	 	<property name="dataSource" ref="proxyDataSource"/>
+	 </bean>
+	 
+	 <!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
+	 
+	 <!-- 
+	 	1. xml방식으로 설정하기(bean 등록은 유지)
+	 	
+	  -->
+	<tx:advice id="txadvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 적용할 메소드 이름 : insert로시작하는 메소드 전부 -->
+			<tx:method name="insert*"/>
+		</tx:attributes>
+	</tx:advice>
 	
-	
-	
-	
+	<aop:config>
+		<aop:pointcut expression="within(com.bs.spring..*ServiceImpl)" id="transpo"/>
+		<aop:advisor advice-ref="txadvice" pointcut-ref="transpo"/>
+	</aop:config>
 	
 	
 	

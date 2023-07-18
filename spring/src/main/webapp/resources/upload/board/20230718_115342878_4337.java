@@ -1,17 +1,19 @@
-package com.bs.spring.board.sevice;
+package com.bs.spring.board.model.service;
 
 import java.util.List;
 import java.util.Map;
 
 import com.bs.spring.board.model.dto.Board;
 
-public interface BoardService{
-
+public interface BoardService {
+		
+	int insertBoard(Board b);
+	
 	List<Board> selectBoardAll(Map<String,Object> param);
 	
 	int selectBoardCount();
 	
-	Board boardView(int no);
+	Board selectBoardById(int no);
 	
-	int insertBoard(Board b);
+	
 }

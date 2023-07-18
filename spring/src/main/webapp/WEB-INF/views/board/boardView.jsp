@@ -8,17 +8,24 @@
 </jsp:include>
 <section>
     <div id="board-container">
-        <input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" value="${bView.boardTitle}" required>
-        <input type="text" class="form-control" name="boardWriter"  value="${bView.boardWriter}" readonly required>
-
-            <button type="button" 
-                    class="btn btn-outline-success btn-block"
-                    onclick="">
-            </button>
-        
-        
+        <input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" value="${board.boardTitle}" required>
+        <input type="text" class="form-control" name="boardWriter"  value="${board.boardWriter.userId}" readonly required>
+		<c:if test="${not empty board.file }">
+			<c:forEach var="f" items="${board.file }">
+		        <button type="button" 
+		                 class="btn btn-outline-success btn-block"
+		                 onclick="fn_fileDl('${f.originalFileName}','${f.renameFileName}')">
+		                 ${f.originalFileName }
+		    	</button>
+		    </c:forEach>
+	    </c:if>
         <textarea class="form-control" name="boardContent" placeholder="내용" required>${bView.boardContent}</textarea>
     </div>
+    <script>
+    	function fn_fileDl(oriName,reName){
+    		location.assign("${path}/board/filedownload?oriName="+oriName+"&reName="+reName);
+    	}
+    </script>
 
      <style>
     div#board-container{width:400px; margin:0 auto; text-align:center;}
