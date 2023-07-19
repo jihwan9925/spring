@@ -46,6 +46,8 @@
 		<!-- 새로만든  -->
 		<springform:form modelAttribute="member" name="memberEnrollFrm" action="${path }/member/insertMember.do" method="post" >
 			<springform:input path="userId" type="text" class="form-control" placeholder="아이디 (4글자이상)" name="userId" id="userId_"/>
+			<button type="button" class="btn btn-outline-danger" onclick="doubleCheck();">중복확인</button>
+			<span id="result"></span>
 			<springform:errors path="userId" cssClass="error" />
 			<springform:input path="password" type="password" class="form-control" placeholder="비밀번호" name="password" id="password_" />
 			<springform:errors path="password" cssClass="error" />
@@ -78,4 +80,23 @@
 			<input type="reset" class="btn btn-outline-success" value="취소">
 		</springform:form>
 	</div>
+	<script>
+		const doubleCheck=()=>{
+			const userId = $("#userId_").val();
+			if(userId.trim().length>=4){
+				$.get('${path}/ajax/doubleCheck.do',{"userId":$("#userId_").val()},(data)=>{
+					if(data.length==0){
+						console.log("사용가능");
+						$("#result").text("사용 가능한 아이디 입니다.").css("color","green");
+					}else{
+						console.log("사용불가능");
+						$("#result").text("사용 불가능한 아이디 입니다.").css("color","red");
+					}
+				});				
+			}else{
+				alert("userId는 4글자 이상 입력하세요");
+			}
+		}
+	</script>
+	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

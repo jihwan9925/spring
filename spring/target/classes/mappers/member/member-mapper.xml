@@ -18,4 +18,8 @@
 	<update id="update" parameterType="member"> 
 		UPDATE MEMBER SET USERNAME=#{userName}, GENDER=#{gender}, AGE=#{age}, EMAIL=#{email}, PHONE=#{phone}, ADDRESS=#{address}, HOBBY=#{hobby, typeHandler=strArr}, ENROLLDATE=SYSDATE WHERE USERID=#{userId}
 	</update>
+	
+	<select id="selectMemberAll" resultMap="memberMap">
+		SELECT * FROM MEMBER
+	</select>
 </mapper>

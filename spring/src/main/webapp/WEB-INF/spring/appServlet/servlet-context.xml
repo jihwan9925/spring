@@ -115,6 +115,17 @@
 	  	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="104857600"/>
 	  </beans:bean>
+	  
+	  <!-- spring에서 ajax처리하기 -->
+	  <beans:bean id="jacksonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	  
+	  <beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	  	<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="jacksonConverter"/>
+			</beans:list>
+		</beans:property>	
+	  </beans:bean>
 	 
 	 
 	 
