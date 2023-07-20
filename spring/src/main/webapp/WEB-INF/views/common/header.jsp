@@ -71,6 +71,10 @@
 							${loginMember.userName}
 						</a>
 						님 환영합니다.&nbsp;
+						
+						<button class="btn btn-outline-primary my-2 my-sm-0"
+						onclick="open('${path }/chattingPage','_blank','width=400,height=500')">채팅하기</button>
+						
 						<button class="btn btn-outline-success my-2 my-sm-0"
 						onclick="location.replace('${path }/member/logout.do')">로그아웃</button>
 					</c:if>

@@ -3,6 +3,7 @@ package com.bs.spring.ajax.controller;
 import java.io.IOException;
 import java.util.List;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import com.bs.spring.board.model.dto.Board;
 import com.bs.spring.member.model.dto.Member;
 import com.bs.spring.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.bs.spring.common.exception.AuthenticationException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,18 +67,35 @@ public class AjaxController {
 	
 	@GetMapping("/selectMemberAll")
 	@ResponseBody
-	public List<Member> selectMemberAll() {
+	public List<Member> selectMemberAll(){
+		//if(1==1) throw new AuthenticationException("권한에러발생!");
 		return service.selectMemberAll();
 	}
 	
 	@PostMapping("/insertData.do")
+	@ResponseBody
 	public Member insertData(@RequestBody Member m) {
 		log.info("{}",m);
 		return m;
 	}
 	
-	
-	
+	//REST API, RESTful
+	//의미 : URL을 설정할 때 간편하게 서비스를 알아볼 수 있는 방식으로 구현하자
+	//		웹에서 url주소를 설계할 때 주소만 보고도 알아볼수 있도록 메소드로 구분하는 방식
+	//		URL주소를 설정을 할 때 행위에 대한 표현을 빼자 -> 행위는 method를 보고 결정하자
+	//목적 : session,Cookie 관리를 하지않는다.(stateless) ajax라서 가능함, 
+	//method
+	//GET : Data를 조회하는 서비스
+	//POST : Data를 저장하는 서비스
+	//PUT : Data를 수정하는 서비스
+	//DELETE : Data를 삭제하는 서비스
+	//URL설정할 때는 명사로 작성한다.
+	// ex: 회원을 관리하는 서비스
+	// GET localhost:9090/spring/member -> 전체회원 조회
+	// GET localhost:9090/spring/member/{id}1||admin -> 회원 1명 조회
+	// POST localhost:9090/spring/member -> 회원 추가
+	// PUT localhost:9090/spring/member -> 회원 수정	
+	// DELETE localhost:9090/spring/member -> 회원 삭제	
 	
 	
 	

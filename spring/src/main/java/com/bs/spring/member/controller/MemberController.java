@@ -82,7 +82,7 @@ public class MemberController {
 	public String logout(SessionStatus status) {
 		//@SessionAttributes로 등록된 내용 삭제하기 -> SessionStatus객체를 이용해서 삭제
 //		if(session!=null) session.invalidate();
-		if(1==1) throw new IllegalArgumentException("잘못된 접근입니다."); //오류를 보기위한 임시코드
+//		if(1==1) throw new IllegalArgumentException("잘못된 접근입니다."); //오류를 보기위한 임시코드
 		
 		if(!status.isComplete()) status.setComplete();
 		return "redirect:/";

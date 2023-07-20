@@ -71,7 +71,7 @@
 					data=>{
 						console.log(data);
 					}); */
-			$.ajax({
+			/* $.ajax({
 				url:"${pageContext.request.contextPath}/ajax/insertData.do",
 				type:"post",
 				data:JSON.stringify(data),
@@ -79,11 +79,51 @@
 				success:data=>{
 					console.log(data);
 				}
-			});
+			}); */
 					
-			//fetch함수를 제공함
+			//fetch함수를 제공함, 다른 라이브러리가 필요없다.
+			//사용법 : fetch("URL주소", {요청에 대한 옵션})
+			//.then(response=>response.json()) [중간과정이 생김으로서 응답내용의 파싱(=에러처리)을 할수있다.]
+			//.then(data=>{처리로직}) == success함수
+			/* fetch("${pageContext.request.contextPath}/ajax/selectMemberAll.do",{
+				method:"get",
+				//headers:{} 헤더에 세부적인 옵션값을 줄 수 있다.
+				//body:JSON.stringify(객체)
+			})
+			// fetch에서 리턴되는 값이 response가 된다.
+			.then(response=>{
+				console.log(response);
+				if(!response.ok) throw new Error("요청실패!");
+				return response.json()
+			})
+			// return response.json()가 data가 된다.
+			.then(data=>{
+				console.log(data)
+			}).catch(e=>{
+				//위에서 에러발생한 것에 대한처리를 이곳에서 처리할 수 있다.
+				alert(e);
+			}); */
+			console.log(JSON.stringify(data));
+			fetch("${pageContext.request.contextPath}/ajax/insertData.do",{
+				method:"post",
+				headers:{
+					"Content-type":"application/json" //보내는방식이 json이라는 의미(=파일의 확장자와 유사한 개념)
+				},body:JSON.stringify(data) //자바스크립트의 값을 JSON 문자열로 변환하는 함수
+			}).then(response=>{
+				if(!response.ok)new Error("입력실패");
+				return response.json()	//서버가 json으로 응답하는 로직
+				//일반문자를 받아올 땐 response.text()
+			})
+			.then(data=>{
+				console.log(data);
+				}).catch(e=>{
+					alert(e);
+				});
+			
 			
 		}
+		
+		
 	</script>
 
 
