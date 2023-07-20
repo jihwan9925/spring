@@ -1,0 +1,17 @@
+#yml : 띄어쓰기와 개행, 그리고 : 을 기준으로 계층을 구현
+#ex) server:
+#      port: -> server.port
+server:
+  port: 9090
+  
+spring:
+  datasource:
+      driver-class-name: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@localhost:1521:xe
+      username: spring
+      password: spring
+      
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
