@@ -3,11 +3,118 @@
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xmlns:security="http://www.springframework.org/schema/security"
    xmlns:context="http://www.springframework.org/schema/context"
-   xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
+   xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.8.xsd
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+	<!-- 다른 파일에서 구성한 bean을 가져오는 방법 -->
+	<!-- <import resource="root-context.xml"/> -->
+	
 	<!-- 암호화처리 클래스를 bean으로 등록하기 -->
 	<bean id="bcryptPassword" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
+	<!-- 암호화처리 클래스를 bean으로 등록하기 -->
+	<security:http auto-config="true">
+		<!-- 
+			로그인에 인증처리하기
+			id, password를 입력받아서 DB나 저장소에 등록한 것와 일치여부확인, session에 저장 -> security에 위임
+			security:form-login태그 이용
+			속성을 이용해서 설정
+			username-parameter : 로그인 form에서 제공하는 id의 name값을 변경(key)
+			password-parameter : 로그인 form에서 제공하는 password의 name값을 변경(key)
+			login-page : 기본로그인 페이지가 아닌 커스터마이징한 로그인페이지를 등록할 때 사용
+			default-target-url : 로그인 성공 시 연결되는 주소
+			authentication-failure-forward-url : 인증과정에서 인증이 실패했을 때 연결되는 주소
+			authentication-success-forward-url : 인증과정에서 인증이 성공했을 때 연결되는 주소
+			login-processing-url : 인증처리 요청주소(@controller에서 메소드가받는 주소와 동일)
+		 -->
+		<security:form-login
+			username-parameter="userId"
+			password-parameter="password"
+			login-page="/loginPage"
+			login-processing-url="/loginEnd"
+			default-target-url="/"
+			authentication-failure-forward-url="/error.do"
+			authentication-success-forward-url="/successLogin.do"
+		/>
+	
+		<!-- 추가인증이 필요한 로직 (비활성화) -->
+		<security:csrf disabled="true"/>
+		
+		<!-- 인증처리할 서비스를 등록
+			security:intercetor-url태그를 이용해서 등록
+			기본적으로 모든 URL에 대해 인증처리등록
+			예외사항에 대한 것을 추가등록하는 방식으로 설정
+			
+			속성설정
+			pattern : 해당하는 url주소 -> 패턴방식으로 설정
+			access : 이용권한에 대한 설정 (permitAll(), hasRole("역할이름"), 
+			hasAnyRole("역할이름","역할이름",...), hasAuthority(""), hasAnyAuthority(""))
+		-->
+		<!-- /loginPage에 대해서는 모든 접근을 허용(순차적으로 처리함) -->
+		<security:intercept-url pattern="/loginPage" access="permitAll()"/>
+		<!-- css, js, img 같이 외부파일을 불러오는 경우에도 접근을 제한하기 떄문에 제한해제 -->
+		<security:intercept-url pattern="/resources/**" access="permitAll()"/>
+		<!--  -->
+		<security:intercept-url pattern="/loginSuccess" access="permitAll()"/>
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<!-- 회원가입 허용 -->
+		<security:intercept-url pattern="/member/enrollMember.do" access="permitAll()"/>
+		<security:intercept-url pattern="/member/insertMember.do" access="permitAll()"/>
+		
+		<security:intercept-url pattern="/admin/**" access="hasAuthority('admin')"/>
+		<security:intercept-url pattern="/manager/**" access="hasAnyAuthority('admin','manager')"/>
+		
+		<!-- 그 외 모든 접근에서 user01과 admin외에는 접근 제한 -->
+		<security:intercept-url pattern="/**" access="hasAnyAuthority('user','admin','manager')"/>
+		
+		
+		<!-- 
+			logout에 대한 설정
+			security:logout태그를 이용
+			logout-url : 로그아웃을 처리하는 url주소를 설정
+			loglout-success-url : 로그아웃 후 처리할 서비스가 있으면 설정
+		 -->
+		<security:logout 
+			logout-url="/relogout.do" 
+		/>
+		<!-- 로그아웃이 성공하면 실행할 로직경로 -->
+		<!-- logout-success-url="/logoutSuccess" -->
+		
+		
+		<!-- 권한이 부족한 사용자가 접속시 커스텀페이지로 연결 -->
+		<security:access-denied-handler
+		error-page="/WEB-INF/views/common/error/authentication.jsp"/>
+		
+		
+	</security:http>
+
+	<security:authentication-manager>
+		<!-- 
+			사용자인증처리에 대한 설정
+			1. 인메모리 인증처리 : 사용자에 대해 직접 작성해 놓은 것
+			2. DB와 연동해서 인증처리 : DB에 저장된 정보를 가지고 처리하기
+		 -->
+		 <security:authentication-provider user-service-ref="loginService">
+			<!-- <security:user-service>
+				<security:user name="admin" authorities="ROLE_ADMIN" password="$2a$10$9vBjJyaLoPen1vdbI.kq4e0PXTZRJ2NlZTZ1TflCr4Bz1ww4hXmP2"/>
+				<security:user name="user01" authorities="ROLE_USER" password="$2a$10$9vBjJyaLoPen1vdbI.kq4e0PXTZRJ2NlZTZ1TflCr4Bz1ww4hXmP2"/>
+			</security:user-service>
+			<security:password-encoder ref="bcryptPassword"/> -->
+			<security:password-encoder ref="bcryptPassword"/>
+			
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<bean id="dao" class="com.bs.spring.member.dao.MemberDaoImpl"/>
+	<bean id="loginService" class="com.bs.spring.security.controller.SecurityLoginService">
+		<constructor-arg index="0" ref="dao"/>
+		<constructor-arg index="1" ref="sessionTemplate"/>
+	</bean>
+
+
+
+
+
 
 </beans>

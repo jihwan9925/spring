@@ -21,9 +21,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${path}/resources/css/style.css"/>
 <script src="${path}/resources/js/jquery-3.7.0.min.js"></script>
+<c:set var="loginInfo" value="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }"/>
 </head>
 <body>
 	<div id="container">
+		<p>
+			security에 저장된 로그인정보 확인하기
+			${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal }<br>
+		</p>
 		<header>
 			<div id="header-container">
 				<h2>${param.title }</h2>
@@ -56,7 +61,7 @@
 							<a class="nav-link" href="${path }/board/boardList.do">board</a>
 						</li>
 					</ul>
-					<c:if test="${loginMember==null }">
+					<c:if test="${loginInfo==null }">
 						<button class="btn btn-outline-success my-2 my-sm-0"
 						data-toggle="modal" data-target="#loginModal">로그인</button>
 						&nbsp;
@@ -65,10 +70,10 @@
 							회원가입
 						</button>					
 					</c:if>
-					<c:if test="${loginMember!=null }">
-						<a href="${path }/member/mypage.do">
+					<c:if test="${loginInfo!=null }">
+						<a href="${path }/member/mypage.do?userId=${loginInfo.username}">
 							<%-- <c:out value="${loginMember.userName!=null}?${loginMember.userName}:''"/> --%>
-							${loginMember.userName}
+							${loginInfo.username}
 						</a>
 						님 환영합니다.&nbsp;
 						
@@ -76,7 +81,7 @@
 						onclick="open('${path }/chattingPage','_blank','width=400,height=500')">채팅하기</button>
 						
 						<button class="btn btn-outline-success my-2 my-sm-0"
-						onclick="location.replace('${path }/member/logout.do')">로그아웃</button>
+						onclick="location.replace('${path }/relogout.do')">로그아웃</button>
 					</c:if>
 				</div>
 			</nav>	
@@ -92,7 +97,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<form action="${path }/member/login.do" method="post">
+					<form action="${path }/loginEnd" method="post">
 						<div class="modal-body">
 							<input type="text" name="userId" class="form-control"
 							placeholder="아이디입력" required><br/>
