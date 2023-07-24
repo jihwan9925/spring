@@ -11,7 +11,36 @@ spring:
       username: spring
       password: spring
       
+      
+#multipartFrom 설정하기
+  servlet:
+    multipart:
+      max-file-size: 10MB
+        
+      
   mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp
+      view:
+        prefix: /WEB-INF/views/
+        suffix: .jsp
+        
+#mybatis설정하기
+#만약에 mapper를 인터페이스의 어노테이션으로 만든다면 직접 경로에 지정하기 때문에 여기서 경로지정을 하지 않아도 된다.
+#mybatis:
+#  mapper-locations: classpath:/mappers/**/*.xml
+#  config-location: classpath:/config/mybatis-config.xml
+  
+#log설정하기
+logging:
+  file:
+    name: logs/springboot.log
+  level: 
+    '[com.bs.helloboot]': debug
+    
+#yml에 있는 정보 가져오기(controller에서 @Value("${경로}"))
+linux:
+  url: http://14.36.141.71
+  port: 9994
+  baseDir: /home/bsyoo
+  
+
+
