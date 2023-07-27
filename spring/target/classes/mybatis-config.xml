@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.bs.spring.demo.model.dto.Demo" alias="demo"/>
+		<typeAlias type="com.bs.spring.demo.model.dto.Memo" alias="memo"/>
+		<typeAlias type="com.bs.spring.member.model.dto.Member" alias="member"/>
+		<typeAlias type="com.bs.spring.board.model.dto.Board" alias="board"/>
+		<typeAlias type="com.bs.spring.board.model.dto.Attachment" alias="attachment"/>
+		<typeAlias type="com.bs.spring.common.StringArrayTypeHandler" alias="strArr"/>
+	</typeAliases>
+	
+	<!-- spring으로 오면서 mybatis-spring이 자동으로 처리해준다. = 안써줘도됨!!! -->
+	<!-- <properties resource="driver.properties"></properties>
+		<settings>
+			<setting name="jdbcTypeForNull" value="NULL"/>
+		</settings>
+	<environments default="demo">
+		<environment id="demo">
+			<transactionManager type="JDBC"/>
+				<dataSource type="POOLED">
+					<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+					<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+					<property name="username" value="spring"/>
+					<property name="password" value="spring"/>
+				</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="resources/mappers/dev/dev-mapper.xml"/>
+	</mappers> -->
+</configuration>

@@ -1,11 +1,24 @@
 package com.bs.spring.jpa.entity;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.bs.spring.jpa.common.Level;
+import com.bs.spring.jpa.common.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,10 +53,53 @@ public class JpaMember {
 	@Id //entity를 식별하는 식별자가, DB에서는 Primary key제약조건이 설정된다.
 	@GeneratedValue(generator = "seq_jpamemberno", strategy = GenerationType.SEQUENCE)
 	//시퀀스 설정을 dto에 적용하는 방법 (strategy : 어노테이션으로 설정한 dto에 자동으로 시퀀스를 부여)
+	@Column(name="member_no")
 	private Long memberNo;
-	
+	@Column(name="member_id",unique=true,nullable=false,length=20)
 	private String memberId;
+	@Column(name="member_pwd",nullable=false,length=20)
 	private String memberPwd;
-	private Integer age;
+	@Column(precision=10, scale=3)
+	private BigDecimal age;
+	@Column(columnDefinition = "number default 100.0")
 	private double height;
+	
+	//EnumType를 이용해서 처리하기
+	@Column(name="member_role")
+	@Enumerated(EnumType.STRING)//문자열로 저장
+	private Role role;
+	@Column(name="member_level")
+	@Enumerated(EnumType.ORDINAL)//문자열과 연결되어있는 숫자로 저장
+	private Level level;
+	
+	//날짜타입에 대해 설정하기
+	@Temporal(TemporalType.DATE)
+	private java.util.Date birthDay;
+	@Temporal(TemporalType.TIMESTAMP)
+	private java.util.Date startDate;
+	
+	//lob타입 설정하기
+	//자료형이 String이면 clob, byte면 blob
+	@Lob
+	private String info;
+	@Lob
+	private byte[] dataSample;
+	
+	//DB컬럼 대상에서 제외하기
+	@Transient
+	private String tempData;
+	
+	//임베디드 설정하기
+	@Embedded
+	private Address addr;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
