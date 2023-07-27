@@ -12,7 +12,7 @@
 	<h3><a href="${pageContext.request.contextPath}/member/memberAll">전체회원 조회</a></h3>
 	<form action="${pageContext.request.contextPath}/fileUpload" method="post" enctype="multipart/form-data">
 		<input type="file" name="upFile">
-		<input type="file" name="upFile">
+		<input type="file" name="upFile">	
 		<input type="file" name="upFile">
 		<input type="submit" value="파일저장">
 	</form>
@@ -44,6 +44,24 @@
 	<script>
 		function openchatting(){
 			open("/chattingpage","_blank","width=400, height=500");
+		}
+	</script>
+	
+	<button onclick="memberAll();">요청처리하기</button>
+	<script>
+		const memberAll=()=>{
+			fetch("${pageContext.request.contextPath}/ajax/memberAll")
+				.then(response=>{
+					if(!response.ok) 
+						throw new Error("요청에러"); 
+					return response.json();}
+				)
+				.then(data=>{
+					console.log(data);
+				})
+				.catch(error=>{
+					console.log(error);
+				});
 		}
 	</script>
 </body>

@@ -265,8 +265,36 @@
 		    <version>${org.springframework-version}</version>
 		</dependency>
 
+		<!--
+			JPA의존성 등록하기
+			hibernate-core 5.6.7버전
+			hibernate-jpa-2.1-api 1.0.2
+			hibernate-entitymanager 5.6.7
+		-->
 		
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>5.6.7.Final</version>
+		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
+		<dependency>
+		    <groupId>org.hibernate.javax.persistence</groupId>
+		    <artifactId>hibernate-jpa-2.1-api</artifactId>
+		    <version>1.0.2.Final</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-entitymanager</artifactId>
+		    <version>5.6.7.Final</version>
+		</dependency>
+
+
+
 		
 		
 		
